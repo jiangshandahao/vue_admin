@@ -8,10 +8,18 @@ import UserList from '@/components/user/UserList'
 import UserProfile from '@/components/user/UserProfile'
 import UserChangepwd from '@/components/user/UserChangepwd'
 
+// 懒加载方式，当路由被访问的时候才加载对应组件
+const Login = resolve => require(['@/components/Login'], resolve)
+
 Vue.use(Router)
 
 let router_admin = new Router({
   routes: [
+  	{
+  		path: '/login',
+  		name: '登录',
+  		component: Login
+  	},
     {
       path: '/',
       name: '首页',

@@ -9,14 +9,14 @@
   		<el-col :span = "20"  >
   			<el-menu theme="dark" default-active="1"  class = "topbar-menu" mode="horizontal" @select="handleSelect">
   				<el-submenu index="1">
-  					<template slot="title">您好，用户姓名</template>
+  					<template slot="title">您好，{{sysUserName}}</template>
   					<el-menu-item index="2-1">
   						<router-link to = "/user/profile">个人信息</router-link>
   					</el-menu-item>
   					<el-menu-item index="2-2">
   						<router-link to="/user/changepwd">修改密码</router-link>
   					</el-menu-item>
-  					<el-menu-item index="2-3">
+  					<el-menu-item index="2-3" @click = "open2">
   						退出登录
   					</el-menu-item>
   				</el-submenu>
@@ -50,7 +50,7 @@
   	 			
   	 		</el-menu>
   	 	</el-col>
-  		<el-col :span="rightCol" style = "padding:30px;" >
+  		<el-col :span="rightCol" style = "padding:10px 20px;" >
         		<router-view></router-view>	
   		</el-col>
   	</el-row>
@@ -59,14 +59,28 @@
 </template>
 
 <script>
+import { bus } from '../bus.js'
 export default {
 	name:'frame',
+	created(){
+      bus.$on('setUserName', (text) => {
+        this.sysUserName = text;
+      })
+    },
 	data() {
       return {
+      	sysUserName: '',
         isCollapse: false,
         leftCol: 4,
         rightCol:20
       };
+    },
+    mounted() {
+      var user = sessionStorage.getItem('access-user');
+      if (user) {
+        user = JSON.parse(user);
+        this.sysUserName = user.name || '';
+      }
     },
     methods: {
     	  handleFoldMenu(){
@@ -87,12 +101,30 @@ export default {
       },
       handleClose(key, keyPath) {
         //SubMenu 收起的回调
+      },
+      open2() {
+      	var _this = this;
+        this.$confirm('确认退出吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this.$router.push('/login');
+        }).catch(() => {
+//        this.$message({
+//          type: 'info',
+//          message: '已取消删除'
+//        });          
+        });
       }
+    
     }
   
 }
 </script>
-
+<style>
+	.warp-main{ padding-top: 20px; }
+</style>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	.topbar-wrap {
@@ -133,5 +165,6 @@ export default {
 	    background: #373d41;
 	    border-radius: 0;
 	}
-     
+	
+
 </style>
