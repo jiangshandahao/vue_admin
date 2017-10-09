@@ -24,7 +24,7 @@
   		</el-col>
   	 </el-row>
   	
-  	<el-row>
+  	<el-row class="main">
   	 	<el-col :span="leftCol">
   	 		<el-menu theme = "dark" default-active="1" class="aside-menu-vertical" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
   	 			<el-menu-item  index = "0" class="menu-toggle"  @click= "handleFoldMenu">
@@ -50,7 +50,7 @@
   	 			
   	 		</el-menu>
   	 	</el-col>
-  		<el-col :span="rightCol" style = "padding:10px 20px;" >
+  		<el-col :span="rightCol" class = "content-container" >
         		<router-view></router-view>	
   		</el-col>
   	</el-row>
@@ -157,14 +157,32 @@ export default {
     }
     .aside-menu-vertical{ 
      	min-height: 400px; 
+     	height:100%;
      	border-radius: 0;
      	background: #373d41;
      }
+     
     .aside-menu-item {
 	    margin-left: 0px;
 	    background: #373d41;
 	    border-radius: 0;
 	}
+	.main {
+      display: flex;
+      position: absolute;
+      width:100%;
+      top: 60px;
+      bottom: 0px;
+      overflow: hidden;
+    }
+    .content-container{
+    		background: #fff;
+	    -webkit-box-flex: 1;
+	    -ms-flex: 1;
+	    flex: 1;
+	    overflow-y: auto;
+	    padding: 10px;
+    }
 	
 
 </style>

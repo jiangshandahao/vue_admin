@@ -84,4 +84,18 @@ let router_admin = new Router({
   ]
 });
 
+router_admin.beforeEach((to, from, next) => {
+  if (to.path.startsWith('/login')) {
+    window.sessionStorage.removeItem('access-user')
+    next()
+  } else {
+    let user = JSON.parse(window.sessionStorage.getItem('access-user'))
+    if (!user) {
+      next({path: '/login'})
+    } else {
+      next()
+    }
+  }
+})
+
 export default router_admin;
